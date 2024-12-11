@@ -1,0 +1,84 @@
+﻿@page "/weather"
+@attribute [StreamRendering]
+
+<PageTitle>Weather</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18">Weather Records</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Weather</a></li>
+                        <li class="breadcrumb-item active">Weather-Records</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @if(forecasts == null){
+        <p><em>Loading...................................</em></p>
+    }else{
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Temp. (C)</th>
+                                    <th>Temp. (F)</th>
+                                    <th>Summary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var forecast in forecasts)
+                                {
+                                    <tr>
+                                        <td>@forecast.Date.ToString("MMMM dd, yyyy")</td>
+                                        <td>@forecast.TemperatureC</td>
+                                        <td>@forecast.TemperatureF</td>
+                                        <td>@forecast.Summary</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }    
+
+</div>
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate streaming rendering
+        await Task.Delay(500);
+
+        var startDate = DateOnly.FromDateTime(DateTime.Now);
+        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        {
+            Date = startDate.AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = summaries[Random.Shared.Next(summaries.Length)]
+        }).ToArray();
+    }
+
+    private class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}

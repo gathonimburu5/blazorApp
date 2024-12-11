@@ -1,0 +1,36 @@
+﻿@page "/counter"
+@rendermode InteractiveServer
+
+<PageTitle>Counter</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18">Counter Details</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Counter</a></li>
+                        <li class="breadcrumb-item active">Counter-Details</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="align-center">
+            <p role="status">Current count: @currentCount</p>
+            <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

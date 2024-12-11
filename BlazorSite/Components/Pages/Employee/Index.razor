@@ -1,0 +1,108 @@
+﻿@page "/employee"
+@rendermode InteractiveServer
+@using BlazorSite.Models
+@using BlazorSite.Services
+
+<PageTitle>Employee List</PageTitle>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18">Employee Records</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Employee</a></li>
+                        <li class="breadcrumb-item active">Employee Records</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @if(EmployeeList.EmployeeResult == null){
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-success" role="status"> <span class="sr-only"> Loading..........................</span> </div>
+        </div>
+    }else{
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row mb-3">
+                            <div class="col-sm"></div>
+                            <div class="col-sm-auto"> <div class="text-sm-end"> <a href="employee/create" class="btn btn-success btn-rounded" id="addProject-btn"><i class="mdi mdi-plus me-1"></i> Add New Employee</a> </div> </div>
+                        </div>
+                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Emp No</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email Address</th>
+                                    <th scope="col">Contact</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Emp Type</th>
+                                    <th scope="col">Gender</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Created On</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var employee in EmployeeList.EmployeeResult)
+                                {
+                                    <tr>
+                                        <td> @employee.EmployeeNumber </td>
+                                        <td> @employee.EmployeeName </td>
+                                        <td> @employee.EmailAddress </td>
+                                        <td> @employee.Contact </td>
+                                        <td> @employee.EmployeeStatus </td>
+                                        <td> @employee.EmployeeType </td>
+                                        <td> @employee.Gender </td>
+                                        <td> @employee.PostalAddress   @employee.PhysicalAddress </td>
+                                        <td> @employee.CreatedOn.ToString("MMMM dd, yyyy") </td>
+                                        <td>
+                                            <ul class="list-unstyled hstack gap-1 mb-0">
+                                                <li data-bs-toggle="tooltip" data-bs-placement="top" title="Update">
+                                                    <button @onclick="() => navigateToEditPage(employee.Id)" class="btn btn-sm btn-soft-dark" type="button"><span class="mdi mdi-pencil-outline"></span></button>
+                                                </li>
+                                                <li data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                                    <button @onclick="() => deleteEmployee(employee.Id)" class="btn btn-sm btn-soft-danger" type="button"><span class="mdi mdi-trash-can-outline"></span></button>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }    
+</div>
+
+@inject IEmployeeInterface employeeService;
+@inject NavigationManager navManager;
+@code {
+    private EmployeeData EmployeeList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        EmployeeList = await employeeService.GetEmployeeRecords();
+    }
+
+    private void navigateToEditPage(int empId)
+    {
+        navManager.NavigateTo($"/employee/update/{empId}");
+    }
+
+    private async Task deleteEmployee(int empId)
+    {
+        var result = await employeeService.DeleteEmployeeRecords(empId);
+        Console.WriteLine(result.Message);
+        EmployeeList = await employeeService.GetEmployeeRecords();
+    }
+}

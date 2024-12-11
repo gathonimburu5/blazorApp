@@ -1,0 +1,186 @@
+﻿@page "/employee/update/{empId:int}"
+@rendermode InteractiveServer
+@using BlazorSite.Models
+@using BlazorSite.Services
+
+<PageTitle>Edit Employee</PageTitle>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18">Edit Employee Records</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Employee</a></li>
+                        <li class="breadcrumb-item active">Update Record</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form>
+                        <div class="row d-none">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label">Employee ID</label>
+                                    <input class="form-control" type="hidden" @bind="employeeRecords.Id" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Employee Name <span class="text-danger">*</span></label>
+                                    <input class="form-control" placeholder="enter employee name" @bind="employeeRecords.EmployeeName" oninput="this.value = this.value.toUpperCase()" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Employee Number <span class="text-danger">*</span></label>
+                                    <input class="form-control" placeholder="enter employee number" @bind="employeeRecords.EmployeeNumber" oninput="this.value = this.value.toUpperCase()" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" placeholder="enter email address" @bind="employeeRecords.EmailAddress" oninput="this.value = this.value.toLowerCase()" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                    <input class="form-control" placeholder="enter phone number" @bind="employeeRecords.Contact" oninput="this.value = this.value.toUpperCase()" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Employee Status <span class="text-danger">*</span></label>
+                                    <select class="form-control form-select" @bind="employeeRecords.EmployeeStatus">
+                                        <option value="">select status</option>
+                                        <option value="ACTIVE">ACTIVE</option>
+                                        <option value="IN ACTIVE">IN ACTIVE</option>
+                                        <option value="NOT SPECIFIED">NOT SPECIFIED</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Employee Type <span class="text-danger">*</span></label>
+                                    <select class="form-control form-select" @bind="employeeRecords.EmployeeType">
+                                        <option value="">select type</option>
+                                        <option value="FULL TIME">FULL TIME</option>
+                                        <option value="PART TIME">PART TIME</option>
+                                        <option value="CONTRACT">CONTRACT</option>
+                                        <option value="NOT SPECIFIED">NOT SPECIFIED</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                    <select class="form-control form-select" @bind="employeeRecords.Gender">
+                                        <option value="">select gender</option>
+                                        <option value="MALE">MALE</option>
+                                        <option value="FEMALE">FEMALE</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Postal Address <span class="text-danger">*</span></label>
+                                    <input class="form-control" placeholder="enter postal address" @bind="employeeRecords.PostalAddress" oninput="this.value = this.value.toUpperCase()" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Physical Address <span class="text-danger">*</span></label>
+                                    <input class="form-control" placeholder="enter physical address" @bind="employeeRecords.PhysicalAddress" oninput="this.value = this.value.toUpperCase()" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Marital Status <span class="text-danger">*</span></label>
+                                    <select class="form-control form-select" @bind="employeeRecords.MaritalStatus">
+                                        <option value="">select marital status</option>
+                                        <option value="MARRIED">MARRIED</option>
+                                        <option value="SINGLE">SINGLE</option>
+                                        <option value="NOT SPECIFIED">NOT SPECIFIED</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Date Of Birth <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" placeholder="enter physical address" @bind="employeeRecords.DOB" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="text-end">
+                                <button class="btn btn-outline-primary" @onclick="UpdateEmployeeDetails">Update Records <span class="fa fa-database">&nbsp;</span></button>
+                                <a class="btn btn-outline-danger" @onclick="CancelCreation">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@inject IEmployeeInterface employeeService;
+@inject NavigationManager navManager;
+@code {
+    [Parameter]
+    public int empId { get; set; }
+
+    private Employee employeeRecords;
+    private bool disposed = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        employeeRecords = await employeeService.GetEmployeePerId(empId);
+    }
+
+    private async Task UpdateEmployeeDetails()
+    {
+        //if (disposed) return;
+        try
+        {
+            await employeeService.UpdateEmployeeRecords(employeeRecords, empId);
+            //Console.WriteLine($"success: {result.Message}");
+            navManager.NavigateTo("/employee", forceLoad: true);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Errors: {e.Message}");
+        }
+    }
+
+    private void CancelCreation()
+    {
+        navManager.NavigateTo("/employee");
+    }
+
+    private void Dispose()
+    {
+        disposed = true;
+    }
+}

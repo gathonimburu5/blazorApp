@@ -2,17 +2,22 @@ using Blazored.Modal;
 using Blazored.Toast;
 using BlazorSite.Components;
 using BlazorSite.Services;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddTransient<IHttpClient, HttpClientFactory>();
 builder.Services.AddScoped<IEmployeeInterface, EmployeeService>();
+builder.Services.AddScoped<IDepertmentInterface, DepartmentService>();
 
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+builder.Services.AddSignalR();
+builder.Services.AddServerSideBlazor().AddCircuitOptions(x => { x.DetailedErrors = true; });
 builder.Services.AddControllers();
 builder.Services.AddBlazoredModal();
 builder.Services.AddBlazoredToast();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

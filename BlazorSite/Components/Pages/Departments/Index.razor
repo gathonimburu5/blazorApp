@@ -1,0 +1,108 @@
+﻿@page "/department"
+@rendermode InteractiveServer
+@using BlazorSite.Models
+@using BlazorSite.Services
+
+<PageTitle>Department List</PageTitle>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18">Department Records</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Department</a></li>
+                        <li class="breadcrumb-item active">Department Records</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @if (departmentList == null)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-success" role="status"> <span class="sr-only"> Loading..........................</span> </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row mb-3">
+                            <div class="col-sm"></div>
+                            <div class="col-sm-auto"> <div class="text-sm-end"> <a href="department/create" class="btn btn-success btn-rounded" id="addProject-btn"><i class="mdi mdi-plus me-1"></i> Add New Department</a> </div> </div>
+                        </div>
+                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Descriptions</th>
+                                    <th scope="col">Head of Department</th>
+                                    <th scope="col">Location</th>
+                                    <th scope="col">Date Started</th>
+                                    <th scope="col">Created On</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var employee in departmentList)
+                                {
+                                    <tr>
+                                        <td> @employee.Code </td>
+                                        <td> @employee.Name </td>
+                                        <td> @employee.Description </td>
+                                        <td> @employee.DepartmentHead </td>
+                                        <td> @employee.AddressLocation </td>
+                                        <td> @employee.DateStarted.ToString("dd-MMMM-yyyy") </td>
+                                        <td> @employee.CreatedOn.ToString("MMMM dd, yyyy") </td>
+                                        <td>
+                                            <ul class="list-unstyled hstack gap-1 mb-0">
+                                                <li data-bs-toggle="tooltip" data-bs-placement="top" title="Update">
+                                                    <button @onclick="() => navigateToEditPage(employee.Id)" class="btn btn-sm btn-soft-dark" type="button"><span class="mdi mdi-pencil-outline"></span></button>
+                                                </li>
+
+                                                <li data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                                    <button @onclick="() => deleteDepartment(employee.Id)" class="btn btn-sm btn-soft-danger" type="button"><span class="mdi mdi-trash-can-outline"></span></button>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@inject IDepertmentInterface departmentService;
+@inject NavigationManager navigationManager;
+@code {
+    public List<Department> departmentList { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        departmentList = await departmentService.getDepartmentRecords();
+    }
+
+    private void navigateToEditPage(int departId)
+    {
+        navigationManager.NavigateTo($"department-edit/{departId}");
+    }
+
+    private async Task deleteDepartment(int departId)
+    {
+        await departmentService.deleteDepartmentRecord(departId);
+        departmentList = await departmentService.getDepartmentRecords();
+    }
+}

@@ -136,17 +136,17 @@
 </div>
 
 @inject IEmployeeInterface employeeService;
-@inject NavigationManager navManager;
 @code {
     private Employee employeeRecords = new();
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
 
     private async Task SaveEmployeeDetails()
     {
         try
         {
             await employeeService.CreateEmployeeRecords(employeeRecords);
-            //Console.WriteLine($"success: {result.Message}");
-            navManager.NavigateTo("/employee", forceLoad: true);
+            navigationManager.NavigateTo("/employee");
         }
         catch (Exception e)
         {
@@ -156,6 +156,6 @@
 
     private void CancelCreation()
     {
-        navManager.NavigateTo("/employee");
+        navigationManager.NavigateTo("/employee");
     }
 }

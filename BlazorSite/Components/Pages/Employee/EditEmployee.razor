@@ -146,13 +146,13 @@
 
 
 @inject IEmployeeInterface employeeService;
-@inject NavigationManager navManager;
 @code {
     [Parameter]
     public int empId { get; set; }
-
     private Employee employeeRecords;
     private bool disposed = false;
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -161,12 +161,10 @@
 
     private async Task UpdateEmployeeDetails()
     {
-        //if (disposed) return;
         try
         {
             await employeeService.UpdateEmployeeRecords(employeeRecords, empId);
-            //Console.WriteLine($"success: {result.Message}");
-            navManager.NavigateTo("/employee", forceLoad: true);
+            navigationManager.NavigateTo("employee");
         }
         catch (Exception e)
         {
@@ -176,11 +174,13 @@
 
     private void CancelCreation()
     {
-        navManager.NavigateTo("/employee");
+        navigationManager.NavigateTo("/employee");
     }
 
     private void Dispose()
     {
         disposed = true;
     }
+
+
 }

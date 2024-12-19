@@ -13,9 +13,8 @@ builder.Services.AddScoped<IDepertmentInterface, DepartmentService>();
 
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddSignalR();
-builder.Services.AddServerSideBlazor().AddCircuitOptions(x => { x.DetailedErrors = true; });
+//builder.Services.AddServerSideBlazor().AddCircuitOptions(x => { x.DetailedErrors = true; });
 builder.Services.AddControllers();
-builder.Services.AddBlazoredModal();
 builder.Services.AddBlazoredToast();
 
 var app = builder.Build();

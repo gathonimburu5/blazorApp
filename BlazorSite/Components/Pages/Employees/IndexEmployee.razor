@@ -1,7 +1,5 @@
 ﻿@page "/employee"
 @rendermode InteractiveServer
-@using BlazorSite.Models
-@using BlazorSite.Services
 
 <PageTitle>Employee List</PageTitle>
 <div class="container-fluid">
@@ -67,6 +65,7 @@
                                                 <li data-bs-toggle="tooltip" data-bs-placement="top" title="Update">
                                                     <button @onclick="() => navigateToEditPage(employee.Id)" class="btn btn-sm btn-soft-dark" type="button"><span class="mdi mdi-pencil-outline"></span></button>
                                                 </li>
+
                                                 <li data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                                     <button @onclick="() => deleteEmployee(employee.Id)" class="btn btn-sm btn-soft-danger" type="button"><span class="mdi mdi-trash-can-outline"></span></button>
                                                 </li>
@@ -84,7 +83,11 @@
     }    
 </div>
 
-@inject IEmployeeInterface employeeService;
+
+
+
+
+@* @inject IEmployeeInterface employeeService;
 @inject NavigationManager navManager;
 @code {
     private EmployeeData EmployeeList;
@@ -105,4 +108,4 @@
         Console.WriteLine(result.Message);
         EmployeeList = await employeeService.GetEmployeeRecords();
     }
-}
+} *@

@@ -1,18 +1,16 @@
-﻿@page "/employee/update/{empId:int}"
+﻿@page "/employee/create"
 @rendermode InteractiveServer
-@using BlazorSite.Models
-@using BlazorSite.Services
 
-<PageTitle>Edit Employee</PageTitle>
+<PageTitle>Create Employee</PageTitle>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Edit Employee Records</h4>
+                <h4 class="mb-sm-0 font-size-18">Create New Employee Records</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Employee</a></li>
-                        <li class="breadcrumb-item active">Update Record</li>
+                        <li class="breadcrumb-item active">New Record</li>
                     </ol>
                 </div>
 
@@ -24,15 +22,6 @@
             <div class="card">
                 <div class="card-body">
                     <form>
-                        <div class="row d-none">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="form-label">Employee ID</label>
-                                    <input class="form-control" type="hidden" @bind="employeeRecords.Id" />
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="row mb-2">
                             <div class="col-6">
                                 <div class="form-group">
@@ -114,7 +103,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Marital Status <span class="text-danger">*</span></label>
-                                    <select class="form-control form-select" @bind="employeeRecords.MaritalStatus">
+                                    <select class="form-control form-select" @bind="employeeRecords.MaritalStatus" >
                                         <option value="">select marital status</option>
                                         <option value="MARRIED">MARRIED</option>
                                         <option value="SINGLE">SINGLE</option>
@@ -133,9 +122,9 @@
                         </div>
                         <div class="col-12 mt-3">
                             <div class="text-end">
-                                <button class="btn btn-outline-primary" @onclick="UpdateEmployeeDetails">Update Records <span class="fa fa-database">&nbsp;</span></button>
+                                <button class="btn btn-outline-primary" @onclick="SaveEmployeeDetails">Save Records <span class="fa fa-database">&nbsp;</span></button>
                                 <a class="btn btn-outline-danger" @onclick="CancelCreation">Cancel</a>
-                            </div>
+                            </div>                        
                         </div>
                     </form>
                 </div>
@@ -145,30 +134,26 @@
 </div>
 
 
-@inject IEmployeeInterface employeeService;
+
+
+
+
+@* @inject IEmployeeInterface employeeService;
 @code {
-    [Parameter]
-    public int empId { get; set; }
-    private Employee employeeRecords;
-    private bool disposed = false;
+    private Employee employeeRecords = new();
     [Inject]
     private NavigationManager navigationManager { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        employeeRecords = await employeeService.GetEmployeePerId(empId);
-    }
-
-    private async Task UpdateEmployeeDetails()
+    private async Task SaveEmployeeDetails()
     {
         try
         {
-            await employeeService.UpdateEmployeeRecords(employeeRecords, empId);
-            navigationManager.NavigateTo("employee");
+            await employeeService.CreateEmployeeRecords(employeeRecords);
+            navigationManager.NavigateTo("/employee");
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Errors: {e.Message}");
+            Console.WriteLine($"Error: {e.Message}");
         }
     }
 
@@ -176,11 +161,4 @@
     {
         navigationManager.NavigateTo("/employee");
     }
-
-    private void Dispose()
-    {
-        disposed = true;
-    }
-
-
-}
+} *@
